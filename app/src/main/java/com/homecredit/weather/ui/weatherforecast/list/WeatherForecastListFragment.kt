@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import com.homecredit.weather.databinding.FragmentWeatherForecastListBinding
 import com.homecredit.weather.itemWeatherForecast
 import com.homecredit.weather.ui.UiState
@@ -26,7 +27,7 @@ class WeatherForecastListFragment : Fragment() {
     ): View? {
         binding = FragmentWeatherForecastListBinding.inflate(inflater, container, false)
 
-        weatherListViewModel.getWeatherFromCity()
+        weatherListViewModel.getWeatherForecastFromCities()
 
         weatherListViewModel.weatherForecastsLiveData.observe(
             viewLifecycleOwner,
@@ -36,13 +37,16 @@ class WeatherForecastListFragment : Fragment() {
                         itemWeatherForecast {
                             id(index)
                             data(weather)
+                            onClickListener { _ ->
+                                findNavController().navigate(WeatherForecastListFragmentDirections.toWeatherForecastDetailsFragment())
+                            }
                         }
                     }
                 }
             })
 
         readyOnlyBinding?.swipeRefreshLayout?.setOnRefreshListener {
-            weatherListViewModel.getWeatherFromCity()
+            weatherListViewModel.refreshData()
         }
 
         weatherListViewModel.errorMessage.observe(viewLifecycleOwner, {

@@ -1,4 +1,5 @@
 <resources>
-    <string name="app_name">Weather Forecast</string>
+    <string name="app_name">WeatherApp</string>
     <string name="current_temperature">%1$.1f&#xb0;C</string>
+    <string name="toolbar_title">Weather Forecast</string>
 </resources>

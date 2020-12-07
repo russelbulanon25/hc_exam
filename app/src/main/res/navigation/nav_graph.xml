@@ -8,6 +8,18 @@
     <fragment
         android:id="@+id/weatherForecastListFragment"
         android:name="com.homecredit.weather.ui.weatherforecast.list.WeatherForecastListFragment"
-        android:label="WeatherForecastListFragment"
-        tools:layout="@layout/fragment_weather_forecast_list" />
+        android:label="@string/toolbar_title"
+        tools:layout="@layout/fragment_weather_forecast_list">
+
+        <action
+            android:id="@+id/toWeatherForecastDetailsFragment"
+            app:destination="@id/weatherForecastDetailsFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/weatherForecastDetailsFragment"
+        android:name="com.homecredit.weather.ui.weatherforecast.details.WeatherForecastDetailsFragment"
+        android:label="@string/toolbar_title"
+        tools:layout="@layout/fragment_weather_forecast_details" />
+
 </navigation>
