@@ -12,7 +12,7 @@ import io.reactivex.rxjava3.disposables.Disposable
 import io.reactivex.rxjava3.schedulers.Schedulers
 import timber.log.Timber
 
-class WeatherListViewModel(private val weatherForecastRepository: WeatherForecastRepository) : ViewModel() {
+class WeatherForecastListViewModel(private val weatherForecastRepository: WeatherForecastRepository) : ViewModel() {
 
     private val weatherForecastsMutableLiveData =
         MutableLiveData<ArrayList<WeatherForecast>>(ArrayList())
