@@ -1,30 +1,30 @@
 package com.homecredit.weather.ui.weather.repository.remote
 
 import com.homecredit.weather.data.api.ApiHelper
-import com.homecredit.weather.data.api.weather.GroupedWeatherDto
+import com.homecredit.weather.data.api.weather.GroupedWeatherForecastDto
 import com.homecredit.weather.data.api.weather.WeatherApi
-import com.homecredit.weather.data.api.weather.WeatherDto
+import com.homecredit.weather.data.api.weather.WeatherForecastDto
 import io.reactivex.rxjava3.core.Single
 
 class RemoteWeatherDataSourceImpl(private val apiHelper: ApiHelper) : RemoteWeatherDataSource {
 
-    override fun getWeatherFromCities(
+    override fun getWeatherForecastFromCities(
         cityIds: List<Int>
-    ): Single<GroupedWeatherDto> {
+    ): Single<GroupedWeatherForecastDto> {
         return apiHelper
             .public(WeatherApi::class.java)
             .flatMap {
-                it.getWeatherFromCities(
+                it.getWeatherForecastFromCities(
                     cityIds = cityIds.joinToString(",")
                 )
             }
             .flatMap { Single.fromCallable { it.body() } }
     }
 
-    override fun getWeatherFromCity(cityId: Int): Single<WeatherDto> {
+    override fun getWeatherForecastFromCity(cityId: Int): Single<WeatherForecastDto> {
         return apiHelper
             .public(WeatherApi::class.java)
-            .flatMap { it.getWeatherFromCity(cityId) }
+            .flatMap { it.getWeatherForecastFromCity(cityId) }
             .flatMap { Single.fromCallable { it.body() } }
     }
 }

@@ -1,13 +1,12 @@
 package com.homecredit.weather.ui.weather.repository.remote
 
 import com.homecredit.weather.BaseMockDataFactory.Companion.randomInt
-import com.homecredit.weather.BaseMockDataFactory.Companion.randomString
 import com.homecredit.weather.MockWebServiceRule
 import com.homecredit.weather.WeatherMockDataFactory
 import com.homecredit.weather.data.api.ApiHelper
-import com.homecredit.weather.data.api.weather.GroupedWeatherDto
+import com.homecredit.weather.data.api.weather.GroupedWeatherForecastDto
 import com.homecredit.weather.data.api.weather.WeatherApi
-import com.homecredit.weather.data.api.weather.WeatherDto
+import com.homecredit.weather.data.api.weather.WeatherForecastDto
 import io.mockk.MockKAnnotations
 import io.mockk.every
 import io.mockk.impl.annotations.MockK
@@ -51,13 +50,13 @@ class RemoteWeatherDataSourceImplTest {
         rule.mockWebServer().enqueue(
             MockResponse()
                 .setResponseCode(HTTP_OK)
-                .setBody(rule.jsonAdapter(GroupedWeatherDto::class.java).toJson(expectedResponse))
+                .setBody(rule.jsonAdapter(GroupedWeatherForecastDto::class.java).toJson(expectedResponse))
         )
 
         val expectedCityIds = listOf(randomInt(), randomInt(), randomInt())
 
         classUnderTest
-            .getWeatherFromCities(expectedCityIds)
+            .getWeatherForecastFromCities(expectedCityIds)
             .test()
             .await()
             .assertComplete()
@@ -83,13 +82,13 @@ class RemoteWeatherDataSourceImplTest {
         rule.mockWebServer().enqueue(
             MockResponse()
                 .setResponseCode(HTTP_OK)
-                .setBody(rule.jsonAdapter(WeatherDto::class.java).toJson(expectedResponse))
+                .setBody(rule.jsonAdapter(WeatherForecastDto::class.java).toJson(expectedResponse))
         )
 
         val expectedCityId = randomInt()
 
         classUnderTest
-            .getWeatherFromCity(expectedCityId)
+            .getWeatherForecastFromCity(expectedCityId)
             .test()
             .await()
             .assertComplete()

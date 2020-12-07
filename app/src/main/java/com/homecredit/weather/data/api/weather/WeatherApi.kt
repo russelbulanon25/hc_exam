@@ -8,12 +8,12 @@ import retrofit2.http.Query
 interface WeatherApi {
 
     @GET("/data/2.5/group")
-    fun getWeatherFromCities(
+    fun getWeatherForecastFromCities(
         @Query("id", encoded = true) cityIds: String
-    ): Single<Response<GroupedWeatherDto>>
+    ): Single<Response<GroupedWeatherForecastDto>>
 
     @GET("/data/2.5/weather")
-    fun getWeatherFromCity(
+    fun getWeatherForecastFromCity(
         @Query("id") cityId: Int
-    ): Single<Response<WeatherDto>>
+    ): Single<Response<WeatherForecastDto>>
 }

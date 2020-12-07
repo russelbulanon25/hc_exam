@@ -6,7 +6,7 @@ import io.reactivex.rxjava3.core.Single
 
 interface WeatherRepository {
 
-    fun getWeatherFromCities(cityIds: List<Int>): Observable<Weather>
+    fun getWeatherForecastFromCities(cityIds: List<Int>): Observable<Weather>
 
-    fun getWeatherFromCity(cityId: Int): Single<Weather>
+    fun getWeatherForecastFromCity(cityId: Int): Single<Weather>
 }

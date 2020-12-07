@@ -11,16 +11,16 @@ class WeatherRepositoryImpl(
     private val remoteWeatherDataSource: RemoteWeatherDataSource
 ) : WeatherRepository {
 
-    override fun getWeatherFromCities(cityIds: List<Int>): Observable<Weather> {
+    override fun getWeatherForecastFromCities(cityIds: List<Int>): Observable<Weather> {
         return remoteWeatherDataSource
-            .getWeatherFromCities(cityIds)
+            .getWeatherForecastFromCities(cityIds)
             .flatMapObservable { Observable.fromIterable(it.list) }
             .compose(DtoToWeatherMapper())
     }
 
-    override fun getWeatherFromCity(cityId: Int): Single<Weather> {
+    override fun getWeatherForecastFromCity(cityId: Int): Single<Weather> {
         return remoteWeatherDataSource
-            .getWeatherFromCity(cityId)
+            .getWeatherForecastFromCity(cityId)
             .toObservable()
             .compose(DtoToWeatherMapper())
             .firstOrError()

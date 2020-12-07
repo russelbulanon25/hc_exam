@@ -15,7 +15,7 @@ class WeatherListViewModel(private val weatherRepository: WeatherRepository) : V
 
     fun getWeatherFromCity() {
         weatherRepository
-            .getWeatherFromCities(listOf(1701668, 3067696, 1835848))
+            .getWeatherForecastFromCities(listOf(1701668, 3067696, 1835848))
             .toList()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
