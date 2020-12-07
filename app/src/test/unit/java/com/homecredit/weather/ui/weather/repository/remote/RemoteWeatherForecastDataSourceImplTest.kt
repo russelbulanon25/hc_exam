@@ -2,7 +2,7 @@ package com.homecredit.weather.ui.weather.repository.remote
 
 import com.homecredit.weather.BaseMockDataFactory.Companion.randomInt
 import com.homecredit.weather.MockWebServiceRule
-import com.homecredit.weather.WeatherMockDataFactory
+import com.homecredit.weather.WeatherForecastMockDataFactory
 import com.homecredit.weather.data.api.ApiHelper
 import com.homecredit.weather.data.api.weather.GroupedWeatherForecastDto
 import com.homecredit.weather.data.api.weather.WeatherApi
@@ -45,7 +45,7 @@ class RemoteWeatherForecastDataSourceImplTest {
     fun loadingOfWeatherFromCitiesWillSucceed() {
         provideMockApiHelper()
 
-        val expectedResponse = WeatherMockDataFactory.groupedWeatherDto()
+        val expectedResponse = WeatherForecastMockDataFactory.groupedWeatherDto()
 
         rule.mockWebServer().enqueue(
             MockResponse()
@@ -77,7 +77,7 @@ class RemoteWeatherForecastDataSourceImplTest {
     fun loadingOfWeatherFromSpecificCityWillSucceed() {
         provideMockApiHelper()
 
-        val expectedResponse = WeatherMockDataFactory.weatherDto()
+        val expectedResponse = WeatherForecastMockDataFactory.weatherForecastDto()
 
         rule.mockWebServer().enqueue(
             MockResponse()

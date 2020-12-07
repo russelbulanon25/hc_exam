@@ -9,28 +9,42 @@ data class GroupedWeatherForecastDto(
     @Json(name = "cnt")
     val count: Int,
 
-    val list: List<WeatherForecastDto>
+    @Json(name = "list")
+    val weatherForecastDtoList: List<WeatherForecastDto>
 )
 
 @JsonClass(generateAdapter = true)
 data class WeatherForecastDto(
 
-    val main: WeatherMainDataDto,
+    @Json(name = "id")
+    val locationId: Int,
 
-    val weatherDto: WeatherDto,
+    @Json(name = "name")
+    val locationName: String,
 
-    val name: String
+    @Json(name = "main")
+    val weatherForecastMainDto: WeatherForecastMainDto,
+
+    @Json(name = "weather")
+    val weatherForecastStatusDto: List<WeatherForecastStatusDto>?
 )
 
 @JsonClass(generateAdapter = true)
-data class WeatherDto(
+data class WeatherForecastStatusDto(
 
-    val main: String
+    @Json(name = "main")
+    val status: String
 )
 
 @JsonClass(generateAdapter = true)
-data class WeatherMainDataDto(
+data class WeatherForecastMainDto(
 
     @Json(name = "temp")
-    val temperature: Double
+    val currentTemperature: Double,
+
+    @Json(name = "temp_max")
+    val maxTemperature: Double,
+
+    @Json(name = "temp_min")
+    val minTemperature: Double
 )

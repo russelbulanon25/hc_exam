@@ -16,7 +16,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@{data.name}"
+            android:text="@{data.locationName}"
             tools:text="@string/app_name" />
     </LinearLayout>
 

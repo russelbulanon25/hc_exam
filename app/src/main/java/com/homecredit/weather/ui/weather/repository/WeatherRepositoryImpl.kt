@@ -14,7 +14,7 @@ class WeatherRepositoryImpl(
     override fun getWeatherForecastFromCities(cityIds: List<Int>): Observable<WeatherForecast> {
         return remoteWeatherDataSource
             .getWeatherForecastFromCities(cityIds)
-            .flatMapObservable { Observable.fromIterable(it.list) }
+            .flatMapObservable { Observable.fromIterable(it.weatherForecastDtoList) }
             .compose(DtoToWeatherForecastMapper())
     }
 
