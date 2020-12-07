@@ -1,5 +1,9 @@
 package com.homecredit.weather.ui.weatherforecast.repository.model
 
+import android.os.Parcelable
+import kotlinx.parcelize.Parcelize
+
+@Parcelize
 data class WeatherForecast(
 
     val currentTemperature: Double = 0.0,
@@ -17,7 +21,7 @@ data class WeatherForecast(
     val minTemperature: Double = 0.0,
 
     val weatherStatus: String = ""
-) {
+): Parcelable {
 
     companion object {
         const val HEX_COLOR_COLD = "#26C6DA"

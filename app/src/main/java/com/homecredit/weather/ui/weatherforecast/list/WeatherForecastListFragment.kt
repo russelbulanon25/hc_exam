@@ -14,42 +14,47 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class WeatherForecastListFragment : Fragment() {
 
-    private var binding: FragmentWeatherForecastListBinding? = null
+    private var _binding: FragmentWeatherForecastListBinding? = null
 
-    private val readyOnlyBinding by this::binding
+    private val binding get() = _binding!!
 
-    private val weatherListViewModel: WeatherForecastListViewModel by viewModel()
+    private val viewModel: WeatherForecastListViewModel by viewModel()
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        binding = FragmentWeatherForecastListBinding.inflate(inflater, container, false)
+    ): View {
+        _binding = FragmentWeatherForecastListBinding.inflate(inflater, container, false)
 
-        weatherListViewModel.getWeatherForecastFromCities()
+        viewModel.getWeatherForecastFromCities()
 
-        weatherListViewModel.weatherForecastsLiveData.observe(
+        viewModel.weatherForecastsLiveData.observe(
             viewLifecycleOwner,
             { weatherForecasts ->
-                readyOnlyBinding?.epoxyRecyclerview?.withModels {
+                binding.epoxyRecyclerview?.withModels {
                     weatherForecasts.forEachIndexed { index, weather ->
                         itemWeatherForecast {
                             id(index)
                             data(weather)
                             onClickListener { _ ->
-                                findNavController().navigate(WeatherForecastListFragmentDirections.toWeatherForecastDetailsFragment())
+                                findNavController().navigate(
+                                    WeatherForecastListFragmentDirections
+                                        .toWeatherForecastDetailsFragment(
+                                            weather
+                                        )
+                                )
                             }
                         }
                     }
                 }
             })
 
-        readyOnlyBinding?.swipeRefreshLayout?.setOnRefreshListener {
-            weatherListViewModel.refreshData()
+        binding.swipeRefreshLayout?.setOnRefreshListener {
+            viewModel.refreshData()
         }
 
-        weatherListViewModel.errorMessage.observe(viewLifecycleOwner, {
+        viewModel.errorMessage.observe(viewLifecycleOwner, {
             if (it.isNullOrEmpty().not()) {
                 activity?.let { activity ->
                     Toast.makeText(activity, it, Toast.LENGTH_SHORT).show()
@@ -57,12 +62,17 @@ class WeatherForecastListFragment : Fragment() {
             }
         })
 
-        weatherListViewModel.uiStateLiveData.observe(viewLifecycleOwner, {
+        viewModel.uiStateLiveData.observe(viewLifecycleOwner, {
             it?.let {
-                readyOnlyBinding?.swipeRefreshLayout?.isRefreshing = it == UiState.LOADING
+                binding.swipeRefreshLayout?.isRefreshing = it == UiState.LOADING
             }
         })
 
-        return readyOnlyBinding?.root
+        return binding.root
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        _binding = null
     }
 }

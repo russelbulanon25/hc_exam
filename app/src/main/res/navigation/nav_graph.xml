@@ -20,6 +20,11 @@
         android:id="@+id/weatherForecastDetailsFragment"
         android:name="com.homecredit.weather.ui.weatherforecast.details.WeatherForecastDetailsFragment"
         android:label="@string/toolbar_title"
-        tools:layout="@layout/fragment_weather_forecast_details" />
+        tools:layout="@layout/fragment_weather_forecast_details">
+
+        <argument
+            android:name="weatherForecast"
+            app:argType="com.homecredit.weather.ui.weatherforecast.repository.model.WeatherForecast" />
+    </fragment>
 
 </navigation>
