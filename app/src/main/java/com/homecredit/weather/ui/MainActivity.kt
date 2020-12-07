@@ -1,8 +1,8 @@
 package com.homecredit.weather.ui
 
 import android.os.Bundle
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.Observer
 import com.homecredit.weather.databinding.ActivityMainBinding
 import com.homecredit.weather.itemWeatherForecast
 import com.homecredit.weather.ui.weather.list.WeatherListViewModel
@@ -22,7 +22,7 @@ class MainActivity : AppCompatActivity() {
 
         weatherListViewModel.getWeatherFromCity()
 
-        weatherListViewModel.weatherForecasts.observe(this, Observer { weatherForecasts ->
+        weatherListViewModel.weatherForecastsLiveData.observe(this, { weatherForecasts ->
             binding.epoxyRecyclerview.withModels {
                 weatherForecasts.forEachIndexed { index, weather ->
                     itemWeatherForecast {
@@ -30,6 +30,22 @@ class MainActivity : AppCompatActivity() {
                         data(weather)
                     }
                 }
+            }
+        })
+
+        binding.swipeRefreshLayout.setOnRefreshListener {
+            weatherListViewModel.getWeatherFromCity()
+        }
+
+        weatherListViewModel.errorMessage.observe(this, {
+            if (it.isNullOrEmpty().not()) {
+                Toast.makeText(this, it, Toast.LENGTH_SHORT).show()
+            }
+        })
+
+        weatherListViewModel.uiStateLiveData.observe(this, {
+            it?.let {
+                binding.swipeRefreshLayout.isRefreshing = it == UiState.LOADING
             }
         })
     }

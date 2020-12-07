@@ -113,4 +113,9 @@ dependencies {
     def constraint_layout_version = "2.0.4"
     implementation "androidx.constraintlayout:constraintlayout:$constraint_layout_version"
 
+    def swipe_refresh_layout = "1.1.0"
+    implementation "androidx.swiperefreshlayout:swiperefreshlayout:$swipe_refresh_layout"
+
+    def timber_version = "4.7.1"
+    implementation "com.jakewharton.timber:timber:$timber_version"
 }
