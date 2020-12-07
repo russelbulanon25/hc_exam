@@ -9,13 +9,11 @@ interface WeatherApi {
 
     @GET("/data/2.5/group")
     fun getWeatherFromCities(
-        @Query("appid") appId: String,
         @Query("id", encoded = true) cityIds: String
     ): Single<Response<GroupedWeatherDto>>
 
     @GET("/data/2.5/weather")
     fun getWeatherFromCity(
-        @Query("appid") appId: String,
         @Query("id") cityId: Int
     ): Single<Response<WeatherDto>>
 }

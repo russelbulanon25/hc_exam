@@ -3,6 +3,7 @@ package com.homecredit.weather
 import android.app.Application
 import com.homecredit.weather.di.module.networkModule
 import com.homecredit.weather.di.module.repositoryModule
+import com.homecredit.weather.di.viewModelModule
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin
 
@@ -16,7 +17,8 @@ class WeatherApp : Application() {
             modules(
                 listOf(
                     networkModule,
-                    repositoryModule
+                    repositoryModule,
+                    viewModelModule
                 )
             )
         }
