@@ -1,4 +1,4 @@
-package com.homecredit.weather.ui.weather.repository.remote
+package com.homecredit.weather.ui.weatherforecast.repository.remote
 
 import com.homecredit.weather.data.api.ApiHelper
 import com.homecredit.weather.data.api.weather.GroupedWeatherForecastDto
@@ -6,7 +6,7 @@ import com.homecredit.weather.data.api.weather.WeatherApi
 import com.homecredit.weather.data.api.weather.WeatherForecastDto
 import io.reactivex.rxjava3.core.Single
 
-class RemoteWeatherDataSourceImpl(private val apiHelper: ApiHelper) : RemoteWeatherDataSource {
+class RemoteWeatherForecastDataSourceImpl(private val apiHelper: ApiHelper) : RemoteWeatherForecastDataSource {
 
     override fun getWeatherForecastFromCities(
         cityIds: List<Int>

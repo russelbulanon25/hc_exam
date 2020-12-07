@@ -1,4 +1,4 @@
-package com.homecredit.weather.ui.weather
+package com.homecredit.weather.ui.weatherforecast
 
 import android.graphics.Color
 import android.view.View

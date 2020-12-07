@@ -1,10 +1,10 @@
-package com.homecredit.weather.ui.weather.repository
+package com.homecredit.weather.ui.weatherforecast.repository
 
-import com.homecredit.weather.ui.weather.repository.model.WeatherForecast
+import com.homecredit.weather.ui.weatherforecast.repository.model.WeatherForecast
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.core.Single
 
-interface WeatherRepository {
+interface WeatherForecastRepository {
 
     fun getWeatherForecastFromCities(cityIds: List<Int>): Observable<WeatherForecast>
 

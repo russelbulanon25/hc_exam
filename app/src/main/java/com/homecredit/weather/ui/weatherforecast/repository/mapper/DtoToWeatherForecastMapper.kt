@@ -1,12 +1,12 @@
-package com.homecredit.weather.ui.weather.repository.mapper
+package com.homecredit.weather.ui.weatherforecast.repository.mapper
 
 import com.homecredit.weather.data.api.weather.WeatherForecastDto
 import com.homecredit.weather.data.api.weather.WeatherForecastStatusDto
-import com.homecredit.weather.ui.weather.repository.model.WeatherForecast
-import com.homecredit.weather.ui.weather.repository.model.WeatherForecast.Companion.HEX_COLOR_COLD
-import com.homecredit.weather.ui.weather.repository.model.WeatherForecast.Companion.HEX_COLOR_FREEZING
-import com.homecredit.weather.ui.weather.repository.model.WeatherForecast.Companion.HEX_COLOR_HOT
-import com.homecredit.weather.ui.weather.repository.model.WeatherForecast.Companion.HEX_COLOR_WARM
+import com.homecredit.weather.ui.weatherforecast.repository.model.WeatherForecast
+import com.homecredit.weather.ui.weatherforecast.repository.model.WeatherForecast.Companion.HEX_COLOR_COLD
+import com.homecredit.weather.ui.weatherforecast.repository.model.WeatherForecast.Companion.HEX_COLOR_FREEZING
+import com.homecredit.weather.ui.weatherforecast.repository.model.WeatherForecast.Companion.HEX_COLOR_HOT
+import com.homecredit.weather.ui.weatherforecast.repository.model.WeatherForecast.Companion.HEX_COLOR_WARM
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.core.ObservableSource
 import io.reactivex.rxjava3.core.ObservableTransformer

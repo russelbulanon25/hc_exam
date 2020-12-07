@@ -1,18 +1,18 @@
-package com.homecredit.weather.ui.weather.list
+package com.homecredit.weather.ui.weatherforecast.list
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.homecredit.weather.ui.UiState
-import com.homecredit.weather.ui.weather.repository.WeatherRepository
-import com.homecredit.weather.ui.weather.repository.model.WeatherForecast
+import com.homecredit.weather.ui.weatherforecast.repository.WeatherForecastRepository
+import com.homecredit.weather.ui.weatherforecast.repository.model.WeatherForecast
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.SingleObserver
 import io.reactivex.rxjava3.disposables.Disposable
 import io.reactivex.rxjava3.schedulers.Schedulers
 import timber.log.Timber
 
-class WeatherListViewModel(private val weatherRepository: WeatherRepository) : ViewModel() {
+class WeatherListViewModel(private val weatherForecastRepository: WeatherForecastRepository) : ViewModel() {
 
     private val weatherForecastsMutableLiveData =
         MutableLiveData<ArrayList<WeatherForecast>>(ArrayList())
@@ -29,7 +29,7 @@ class WeatherListViewModel(private val weatherRepository: WeatherRepository) : V
     val uiStateLiveData: LiveData<UiState> by this::uiStateMutableLiveData
 
     fun getWeatherFromCity() {
-        weatherRepository
+        weatherForecastRepository
             .getWeatherForecastFromCities(listOf(1701668, 3067696, 1835848))
             .toList()
             .apply {

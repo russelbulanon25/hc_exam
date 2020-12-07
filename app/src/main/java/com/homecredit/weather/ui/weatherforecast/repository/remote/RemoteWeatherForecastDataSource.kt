@@ -1,10 +1,10 @@
-package com.homecredit.weather.ui.weather.repository.remote
+package com.homecredit.weather.ui.weatherforecast.repository.remote
 
 import com.homecredit.weather.data.api.weather.GroupedWeatherForecastDto
 import com.homecredit.weather.data.api.weather.WeatherForecastDto
 import io.reactivex.rxjava3.core.Single
 
-interface RemoteWeatherDataSource {
+interface RemoteWeatherForecastDataSource {
 
     fun getWeatherForecastFromCities(cityIds: List<Int>): Single<GroupedWeatherForecastDto>
 

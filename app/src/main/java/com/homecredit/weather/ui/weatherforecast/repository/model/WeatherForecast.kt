@@ -1,4 +1,4 @@
-package com.homecredit.weather.ui.weather.repository.model
+package com.homecredit.weather.ui.weatherforecast.repository.model
 
 data class WeatherForecast(
 

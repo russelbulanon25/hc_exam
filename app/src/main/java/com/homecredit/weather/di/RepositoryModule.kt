@@ -1,5 +1,5 @@
 package com.homecredit.weather.di.module
 
-import com.homecredit.weather.ui.weather.repository.weatherRepositoryModule
+import com.homecredit.weather.ui.weatherforecast.repository.weatherForecastRepositoryModule
 
-val repositoryModule = weatherRepositoryModule
+val repositoryModule = weatherForecastRepositoryModule

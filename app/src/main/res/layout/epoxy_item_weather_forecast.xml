@@ -7,7 +7,7 @@
 
         <variable
             name="data"
-            type="com.homecredit.weather.ui.weather.repository.model.WeatherForecast" />
+            type="com.homecredit.weather.ui.weatherforecast.repository.model.WeatherForecast" />
     </data>
 
     <com.google.android.material.card.MaterialCardView

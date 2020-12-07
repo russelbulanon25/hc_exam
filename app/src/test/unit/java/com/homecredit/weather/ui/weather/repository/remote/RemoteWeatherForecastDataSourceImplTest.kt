@@ -7,6 +7,7 @@ import com.homecredit.weather.data.api.ApiHelper
 import com.homecredit.weather.data.api.weather.GroupedWeatherForecastDto
 import com.homecredit.weather.data.api.weather.WeatherApi
 import com.homecredit.weather.data.api.weather.WeatherForecastDto
+import com.homecredit.weather.ui.weatherforecast.repository.remote.RemoteWeatherForecastDataSourceImpl
 import io.mockk.MockKAnnotations
 import io.mockk.every
 import io.mockk.impl.annotations.MockK
@@ -27,13 +28,13 @@ class RemoteWeatherForecastDataSourceImplTest {
     @MockK
     lateinit var apiHelper: ApiHelper
 
-    private lateinit var classUnderTest: RemoteWeatherDataSourceImpl
+    private lateinit var classUnderTest: RemoteWeatherForecastDataSourceImpl
 
     @Before
     fun setUp() {
         MockKAnnotations.init(this)
 
-        classUnderTest = RemoteWeatherDataSourceImpl(apiHelper)
+        classUnderTest = RemoteWeatherForecastDataSourceImpl(apiHelper)
     }
 
     @After
