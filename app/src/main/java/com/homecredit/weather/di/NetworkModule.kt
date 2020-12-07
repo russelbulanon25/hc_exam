@@ -43,6 +43,7 @@ private fun providePublicOkHttpClient() = if (BuildConfig.DEBUG) {
 
             val updatedHttpUrl = original.url.newBuilder()
                 .addQueryParameter("appid", "393eadff6164bf9a0df31a74b20efaee")
+                .addQueryParameter("units", "metric")
                 .build()
 
             val updatedRequest = original.newBuilder().url(updatedHttpUrl).build()
