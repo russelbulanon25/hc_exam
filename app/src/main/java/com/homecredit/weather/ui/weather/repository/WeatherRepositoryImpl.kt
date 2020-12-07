@@ -1,7 +1,7 @@
 package com.homecredit.weather.ui.weather.repository
 
-import com.homecredit.weather.ui.weather.repository.mapper.DtoToWeatherMapper
-import com.homecredit.weather.ui.weather.repository.model.Weather
+import com.homecredit.weather.ui.weather.repository.mapper.DtoToWeatherForecastMapper
+import com.homecredit.weather.ui.weather.repository.model.WeatherForecast
 import com.homecredit.weather.ui.weather.repository.remote.RemoteWeatherDataSource
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.core.Single
@@ -11,18 +11,18 @@ class WeatherRepositoryImpl(
     private val remoteWeatherDataSource: RemoteWeatherDataSource
 ) : WeatherRepository {
 
-    override fun getWeatherForecastFromCities(cityIds: List<Int>): Observable<Weather> {
+    override fun getWeatherForecastFromCities(cityIds: List<Int>): Observable<WeatherForecast> {
         return remoteWeatherDataSource
             .getWeatherForecastFromCities(cityIds)
             .flatMapObservable { Observable.fromIterable(it.list) }
-            .compose(DtoToWeatherMapper())
+            .compose(DtoToWeatherForecastMapper())
     }
 
-    override fun getWeatherForecastFromCity(cityId: Int): Single<Weather> {
+    override fun getWeatherForecastFromCity(cityId: Int): Single<WeatherForecast> {
         return remoteWeatherDataSource
             .getWeatherForecastFromCity(cityId)
             .toObservable()
-            .compose(DtoToWeatherMapper())
+            .compose(DtoToWeatherForecastMapper())
             .firstOrError()
     }
 }

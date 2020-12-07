@@ -6,7 +6,7 @@
 
         <variable
             name="data"
-            type="com.homecredit.weather.ui.weather.repository.model.Weather" />
+            type="com.homecredit.weather.ui.weather.repository.model.WeatherForecast" />
     </data>
 
     <LinearLayout

@@ -19,7 +19,7 @@ import org.junit.Rule
 import org.junit.Test
 import java.net.HttpURLConnection.HTTP_OK
 
-class RemoteWeatherDataSourceImplTest {
+class RemoteWeatherForecastDataSourceImplTest {
 
     @get:Rule
     var rule = MockWebServiceRule()

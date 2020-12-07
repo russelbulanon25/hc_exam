@@ -1,17 +1,17 @@
 package com.homecredit.weather.ui.weather.repository.mapper
 
 import com.homecredit.weather.data.api.weather.WeatherForecastDto
-import com.homecredit.weather.ui.weather.repository.model.Weather
+import com.homecredit.weather.ui.weather.repository.model.WeatherForecast
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.core.ObservableSource
 import io.reactivex.rxjava3.core.ObservableTransformer
 
-class DtoToWeatherMapper : ObservableTransformer<WeatherForecastDto, Weather> {
+class DtoToWeatherForecastMapper : ObservableTransformer<WeatherForecastDto, WeatherForecast> {
 
-    override fun apply(upstream: Observable<WeatherForecastDto>): ObservableSource<Weather> {
+    override fun apply(upstream: Observable<WeatherForecastDto>): ObservableSource<WeatherForecast> {
         return upstream.flatMap {
             Observable.fromCallable {
-                Weather(name = it.name)
+                WeatherForecast(name = it.name)
             }
         }
     }

@@ -3,7 +3,7 @@ package com.homecredit.weather.ui.weather.list
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.homecredit.weather.ui.weather.repository.WeatherRepository
-import com.homecredit.weather.ui.weather.repository.model.Weather
+import com.homecredit.weather.ui.weather.repository.model.WeatherForecast
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.SingleObserver
 import io.reactivex.rxjava3.disposables.Disposable
@@ -11,7 +11,7 @@ import io.reactivex.rxjava3.schedulers.Schedulers
 
 class WeatherListViewModel(private val weatherRepository: WeatherRepository) : ViewModel() {
 
-    var weatherForecasts = MutableLiveData<ArrayList<Weather>>(ArrayList())
+    var weatherForecasts = MutableLiveData<ArrayList<WeatherForecast>>(ArrayList())
 
     fun getWeatherFromCity() {
         weatherRepository
@@ -19,8 +19,8 @@ class WeatherListViewModel(private val weatherRepository: WeatherRepository) : V
             .toList()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribe(object : SingleObserver<List<Weather>> {
-                override fun onSuccess(t: List<Weather>) {
+            .subscribe(object : SingleObserver<List<WeatherForecast>> {
+                override fun onSuccess(t: List<WeatherForecast>) {
                     weatherForecasts.value = ArrayList(t)
                 }
 
