@@ -3,7 +3,6 @@ package com.homecredit.weather.ui.weatherforecast.details
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.homecredit.weather.ui.UiState
 import com.homecredit.weather.ui.weatherforecast.repository.WeatherForecastRepository
 import com.homecredit.weather.ui.weatherforecast.repository.model.WeatherForecast
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
@@ -24,13 +23,7 @@ class WeatherForecastDetailsViewModel(private val weatherForecastRepository: Wea
     val weatherForecastLiveData: LiveData<WeatherForecast>
             by this::weatherForecastMutableLiveData
 
-    private val errorMessageMutableLiveData = MutableLiveData("")
-
-    val errorMessage: LiveData<String> by this::errorMessageMutableLiveData
-
-    private val uiStateMutableLiveData = MutableLiveData(UiState.SUCCESS)
-
-    val uiStateLiveData: LiveData<UiState> by this::uiStateMutableLiveData
+    lateinit var navigator: WeatherForecastListFragmentNavigator
 
     fun setWeatherForecastFromArgs(weatherForecast: WeatherForecast) {
         this.weatherForecastMutableLiveData.value = weatherForecast
@@ -43,13 +36,13 @@ class WeatherForecastDetailsViewModel(private val weatherForecastRepository: Wea
                     it.locationId
                 )
                 .apply {
-                    uiStateMutableLiveData.value = UiState.LOADING
+                    navigator.onShowLoading()
                 }
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(object : SingleObserver<WeatherForecast> {
                     override fun onSuccess(t: WeatherForecast) {
-                        uiStateMutableLiveData.value = UiState.SUCCESS
+                        navigator.onDismissLoading()
 
                         // update values of current selected weather forecast data
                         it.backgroundHexColor = t.backgroundHexColor
@@ -67,9 +60,10 @@ class WeatherForecastDetailsViewModel(private val weatherForecastRepository: Wea
 
                     override fun onError(e: Throwable) {
                         Timber.e(e)
-                        uiStateMutableLiveData.value = UiState.FAILED
+                        navigator.onDismissLoading()
+
                         e.message?.let { errorMessage ->
-                            errorMessageMutableLiveData.value = errorMessage
+                            navigator.onShowErrorMessage(errorMessage)
                         }
                     }
                 })
