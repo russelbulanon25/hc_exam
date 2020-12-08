@@ -6,21 +6,21 @@ import kotlinx.parcelize.Parcelize
 @Parcelize
 data class WeatherForecast(
 
-    val currentTemperature: Double = 0.0,
+    var currentTemperature: Double = 0.0,
 
-    val backgroundHexColor: String = HEX_COLOR_COLD,
+    var backgroundHexColor: String = HEX_COLOR_COLD,
 
     var favorite: Boolean = false,
 
     val locationId: Int = 0,
 
-    val locationName: String = "",
+    var locationName: String = "",
 
-    val maxTemperature: Double = 0.0,
+    var maxTemperature: Double = 0.0,
 
-    val minTemperature: Double = 0.0,
+    var minTemperature: Double = 0.0,
 
-    val weatherStatus: String = ""
+    var weatherStatus: String = ""
 ): Parcelable {
 
     companion object {

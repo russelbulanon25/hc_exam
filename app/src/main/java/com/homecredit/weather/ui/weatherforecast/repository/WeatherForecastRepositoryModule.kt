@@ -8,5 +8,5 @@ val weatherForecastRepositoryModule = module {
 
     factory<RemoteWeatherForecastDataSource> { (RemoteWeatherForecastDataSourceImpl(get())) }
 
-    factory<WeatherForecastRepository> { (WeatherForecastRepositoryImpl(get())) }
+    factory<WeatherForecastRepository> { (WeatherForecastRepositoryImpl(get(), get())) }
 }

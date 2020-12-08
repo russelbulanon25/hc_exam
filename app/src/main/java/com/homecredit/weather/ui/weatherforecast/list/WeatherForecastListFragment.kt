@@ -27,7 +27,11 @@ class WeatherForecastListFragment : Fragment() {
     ): View {
         _binding = FragmentWeatherForecastListBinding.inflate(inflater, container, false)
 
-        viewModel.getWeatherForecastFromCities()
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
         viewModel.weatherForecastsLiveData.observe(
             viewLifecycleOwner,
@@ -68,7 +72,7 @@ class WeatherForecastListFragment : Fragment() {
             }
         })
 
-        return binding.root
+        viewModel.getWeatherForecastFromCities()
     }
 
     override fun onDestroy() {

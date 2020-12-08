@@ -4,6 +4,7 @@ import android.app.Application
 import com.homecredit.weather.di.module.networkModule
 import com.homecredit.weather.di.module.repositoryModule
 import com.homecredit.weather.di.viewModelModule
+import com.homecredit.weather.util.utilModule
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin
 import timber.log.Timber
@@ -23,6 +24,7 @@ class WeatherApp : Application() {
                 listOf(
                     networkModule,
                     repositoryModule,
+                    utilModule,
                     viewModelModule
                 )
             )

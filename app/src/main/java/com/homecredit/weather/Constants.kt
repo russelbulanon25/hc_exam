@@ -7,5 +7,6 @@ class Constants {
         const val LOCATION_ID_PRAGUE = 3067696
         const val LOCATION_ID_SEOUL = 1835848
 
+        const val WARNING_NO_INTERNET_CONNECTION = "No internet connection. Please try again!"
     }
 }

@@ -11,6 +11,7 @@ import com.homecredit.weather.ui.weatherforecast.repository.WeatherForecastRepos
 import com.homecredit.weather.ui.weatherforecast.repository.model.WeatherForecast
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.SingleObserver
+import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.rxjava3.disposables.Disposable
 import io.reactivex.rxjava3.schedulers.Schedulers
 import timber.log.Timber
@@ -18,11 +19,13 @@ import timber.log.Timber
 class WeatherForecastListViewModel(private val weatherForecastRepository: WeatherForecastRepository) :
     ViewModel() {
 
+    private val compositeDisposable = CompositeDisposable()
+
     private val weatherForecastsMutableLiveData =
         MutableLiveData<ArrayList<WeatherForecast>>(ArrayList())
 
     val weatherForecastsLiveData: LiveData<ArrayList<WeatherForecast>>
-            by this::weatherForecastsMutableLiveData
+        get() = weatherForecastsMutableLiveData
 
     private val errorMessageMutableLiveData = MutableLiveData("")
 
@@ -56,19 +59,26 @@ class WeatherForecastListViewModel(private val weatherForecastRepository: Weathe
             .subscribe(object : SingleObserver<List<WeatherForecast>> {
                 override fun onSuccess(t: List<WeatherForecast>) {
                     uiStateMutableLiveData.postValue(UiState.SUCCESS)
-                    weatherForecastsMutableLiveData.postValue(ArrayList(t))
+
+                    weatherForecastsMutableLiveData.value = (ArrayList(t))
                 }
 
                 override fun onSubscribe(d: Disposable) {
+                    compositeDisposable.add(d)
                 }
 
                 override fun onError(e: Throwable) {
                     Timber.e(e)
                     uiStateMutableLiveData.postValue(UiState.FAILED)
-                    e.message?.let {
-                        errorMessageMutableLiveData.postValue(it)
+                    e.message?.let { errorMessage ->
+                        errorMessageMutableLiveData.value = errorMessage
                     }
                 }
             })
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        compositeDisposable.clear()
     }
 }

@@ -8,12 +8,15 @@ import com.homecredit.weather.ui.weatherforecast.repository.WeatherForecastRepos
 import com.homecredit.weather.ui.weatherforecast.repository.model.WeatherForecast
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.SingleObserver
+import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.rxjava3.disposables.Disposable
 import io.reactivex.rxjava3.schedulers.Schedulers
 import timber.log.Timber
 
 class WeatherForecastDetailsViewModel(private val weatherForecastRepository: WeatherForecastRepository) :
     ViewModel() {
+
+    private val compositeDisposable = CompositeDisposable()
 
     private val weatherForecastMutableLiveData =
         MutableLiveData<WeatherForecast>(null)
@@ -30,7 +33,7 @@ class WeatherForecastDetailsViewModel(private val weatherForecastRepository: Wea
     val uiStateLiveData: LiveData<UiState> by this::uiStateMutableLiveData
 
     fun setWeatherForecastFromArgs(weatherForecast: WeatherForecast) {
-        this.weatherForecastMutableLiveData.postValue(weatherForecast)
+        this.weatherForecastMutableLiveData.value = weatherForecast
     }
 
     fun refreshData() {
@@ -40,28 +43,33 @@ class WeatherForecastDetailsViewModel(private val weatherForecastRepository: Wea
                     it.locationId
                 )
                 .apply {
-                    uiStateMutableLiveData.postValue(UiState.LOADING)
+                    uiStateMutableLiveData.value = UiState.LOADING
                 }
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(object : SingleObserver<WeatherForecast> {
                     override fun onSuccess(t: WeatherForecast) {
-                        uiStateMutableLiveData.postValue(UiState.SUCCESS)
+                        uiStateMutableLiveData.value = UiState.SUCCESS
 
-                        // retain current value of favorite
-                        t.favorite = it.favorite
+                        // update values of current selected weather forecast data
+                        it.backgroundHexColor = t.backgroundHexColor
+                        it.currentTemperature = t.currentTemperature
+                        it.maxTemperature = t.maxTemperature
+                        it.minTemperature = t.minTemperature
+                        it.weatherStatus = t.weatherStatus
 
-                        weatherForecastMutableLiveData.postValue(t)
+                        weatherForecastMutableLiveData.value = it
                     }
 
                     override fun onSubscribe(d: Disposable) {
+                        compositeDisposable.add(d)
                     }
 
                     override fun onError(e: Throwable) {
                         Timber.e(e)
-                        uiStateMutableLiveData.postValue(UiState.FAILED)
-                        e.message?.let {
-                            errorMessageMutableLiveData.postValue(it)
+                        uiStateMutableLiveData.value = UiState.FAILED
+                        e.message?.let { errorMessage ->
+                            errorMessageMutableLiveData.value = errorMessage
                         }
                     }
                 })
@@ -72,8 +80,12 @@ class WeatherForecastDetailsViewModel(private val weatherForecastRepository: Wea
     fun toggleFavorite() {
         weatherForecastMutableLiveData.value?.let {
             it.favorite = !it.favorite
-
-            weatherForecastMutableLiveData.postValue(it)
+            weatherForecastMutableLiveData.value = it
         }
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        compositeDisposable.dispose()
     }
 }
