@@ -1,6 +1,7 @@
 package com.homecredit.weather.ui.weatherforecast.details
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
+import com.homecredit.weather.BaseMockDataFactory.Companion.randomString
 import com.homecredit.weather.Constants.Companion.WARNING_NO_INTERNET_CONNECTION
 import com.homecredit.weather.RxImmediateSchedulerRule
 import com.homecredit.weather.WeatherForecastMockDataFactory
@@ -28,7 +29,7 @@ class WeatherForecastDetailsViewModelTest {
     val rule = InstantTaskExecutorRule()
 
     @RelaxedMockK
-    lateinit var navigator: WeatherForecastListFragmentNavigator
+    lateinit var navigator: WeatherForecastDetailsFragmentNavigator
 
     @MockK
     lateinit var weatherForecastRepository: WeatherForecastRepository
@@ -68,21 +69,60 @@ class WeatherForecastDetailsViewModelTest {
 
         val actualErrorMessageSlot = slot<String>()
 
-        verify() { navigator.onShowLoading() }
-        verify() { navigator.onDismissLoading() }
+        verify { navigator.onShowLoading() }
+        verify { navigator.onDismissLoading() }
 
         verify(atLeast = 1) {
             navigator.onShowErrorMessage(errorMessage = capture(actualErrorMessageSlot))
         }
 
+        verify { weatherForecastRepository.getWeatherForecastFromCity(any()) wasNot Called }
+
         assertThat(actualErrorMessageSlot.captured).isEqualTo(WARNING_NO_INTERNET_CONNECTION)
+    }
+
+    @Test
+    fun `refreshing of weather forecast by city will fail`() {
+        val expectedErrorMessage = randomString()
+
+        every {
+            weatherForecastRepository.getWeatherForecastFromCity(any())
+        } returns Single.error { Throwable(expectedErrorMessage) }
+
+        classUnderTest.refreshData()
+
+        val actualErrorMessageSlot = slot<String>()
+
+        verify { navigator.onShowLoading() }
+        verify { navigator.onDismissLoading() }
+
+        verify(atLeast = 1) {
+            navigator.onShowErrorMessage(errorMessage = capture(actualErrorMessageSlot))
+        }
+
+        assertThat(actualErrorMessageSlot.captured).isEqualTo(expectedErrorMessage)
+
+        verify { navigator.onShowLoading() }
+
+        verify { navigator.onDismissLoading() }
+
+        val slot = slot<Int>()
+
+        verify(atLeast = 1) {
+            weatherForecastRepository.getWeatherForecastFromCity(
+                cityId = capture(
+                    slot
+                )
+            )
+        }
+
+        assertThat(slot.captured)
+            .isEqualTo(classUnderTest.weatherForecastLiveData.value!!.locationId)
     }
 
     @Test
     fun `refreshing of weather forecast by city will succeed`() {
         val expectedLocationId = weatherForecast.locationId
-
-        println("expectedLocationId ---> $expectedLocationId")
 
         // verify that we still have the old data before we do the refresh
         assertThat(classUnderTest.weatherForecastLiveData.value!!.currentTemperature).isEqualTo(
@@ -113,8 +153,6 @@ class WeatherForecastDetailsViewModelTest {
             Observable.fromCallable { WeatherForecastMockDataFactory.weatherForecastDto() }
                 .compose(DtoToWeatherForecastMapper())
                 .blockingFirst()
-
-        println("updatedWeatherForecast#locationId ---> ${updatedWeatherForecast.locationId}")
 
         every {
             weatherForecastRepository.getWeatherForecastFromCity(any())
@@ -159,4 +197,5 @@ class WeatherForecastDetailsViewModelTest {
 
         assertThat(slot.captured).isEqualTo(expectedLocationId)
     }
+
 }

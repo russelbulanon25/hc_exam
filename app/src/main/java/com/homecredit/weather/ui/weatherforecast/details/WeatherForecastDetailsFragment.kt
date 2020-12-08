@@ -11,7 +11,7 @@ import com.homecredit.weather.R
 import com.homecredit.weather.databinding.FragmentWeatherForecastDetailsBinding
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class WeatherForecastDetailsFragment : Fragment(), WeatherForecastListFragmentNavigator {
+class WeatherForecastDetailsFragment : Fragment(), WeatherForecastDetailsFragmentNavigator {
 
     private var _binding: FragmentWeatherForecastDetailsBinding? = null
 

@@ -6,7 +6,6 @@ import androidx.lifecycle.ViewModel
 import com.homecredit.weather.Constants.Companion.LOCATION_ID_MANILA
 import com.homecredit.weather.Constants.Companion.LOCATION_ID_PRAGUE
 import com.homecredit.weather.Constants.Companion.LOCATION_ID_SEOUL
-import com.homecredit.weather.ui.UiState
 import com.homecredit.weather.ui.weatherforecast.repository.WeatherForecastRepository
 import com.homecredit.weather.ui.weatherforecast.repository.model.WeatherForecast
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
@@ -25,15 +24,9 @@ class WeatherForecastListViewModel(private val weatherForecastRepository: Weathe
         MutableLiveData<ArrayList<WeatherForecast>>(ArrayList())
 
     val weatherForecastsLiveData: LiveData<ArrayList<WeatherForecast>>
-        get() = weatherForecastsMutableLiveData
+            by this::weatherForecastsMutableLiveData
 
-    private val errorMessageMutableLiveData = MutableLiveData("")
-
-    val errorMessage: LiveData<String> by this::errorMessageMutableLiveData
-
-    private val uiStateMutableLiveData = MutableLiveData(UiState.LOADING)
-
-    val uiStateLiveData: LiveData<UiState> by this::uiStateMutableLiveData
+    lateinit var navigator: WeatherForecastListFragmentNavigator
 
     fun getWeatherForecastFromCities() {
         if (weatherForecastsMutableLiveData.value.isNullOrEmpty()) {
@@ -52,13 +45,13 @@ class WeatherForecastListViewModel(private val weatherForecastRepository: Weathe
             )
             .toList()
             .apply {
-                uiStateMutableLiveData.postValue(UiState.LOADING)
+                navigator.onShowLoading()
             }
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(object : SingleObserver<List<WeatherForecast>> {
                 override fun onSuccess(t: List<WeatherForecast>) {
-                    uiStateMutableLiveData.postValue(UiState.SUCCESS)
+                    navigator.onDismissLoading()
 
                     weatherForecastsMutableLiveData.value = (ArrayList(t))
                 }
@@ -69,9 +62,10 @@ class WeatherForecastListViewModel(private val weatherForecastRepository: Weathe
 
                 override fun onError(e: Throwable) {
                     Timber.e(e)
-                    uiStateMutableLiveData.postValue(UiState.FAILED)
+                    navigator.onDismissLoading()
+
                     e.message?.let { errorMessage ->
-                        errorMessageMutableLiveData.value = errorMessage
+                        navigator.onShowErrorMessage(errorMessage)
                     }
                 }
             })

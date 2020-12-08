@@ -23,7 +23,7 @@ class WeatherForecastDetailsViewModel(private val weatherForecastRepository: Wea
     val weatherForecastLiveData: LiveData<WeatherForecast>
             by this::weatherForecastMutableLiveData
 
-    lateinit var navigator: WeatherForecastListFragmentNavigator
+    lateinit var navigator: WeatherForecastDetailsFragmentNavigator
 
     fun setWeatherForecastFromArgs(weatherForecast: WeatherForecast) {
         this.weatherForecastMutableLiveData.value = weatherForecast

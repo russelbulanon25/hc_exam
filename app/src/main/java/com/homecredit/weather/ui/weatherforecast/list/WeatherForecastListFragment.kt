@@ -9,10 +9,9 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.homecredit.weather.databinding.FragmentWeatherForecastListBinding
 import com.homecredit.weather.itemWeatherForecast
-import com.homecredit.weather.ui.UiState
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class WeatherForecastListFragment : Fragment() {
+class WeatherForecastListFragment : Fragment(), WeatherForecastListFragmentNavigator {
 
     private var _binding: FragmentWeatherForecastListBinding? = null
 
@@ -32,6 +31,8 @@ class WeatherForecastListFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        viewModel.navigator = this
 
         viewModel.weatherForecastsLiveData.observe(
             viewLifecycleOwner,
@@ -58,25 +59,25 @@ class WeatherForecastListFragment : Fragment() {
             viewModel.refreshData()
         }
 
-        viewModel.errorMessage.observe(viewLifecycleOwner, {
-            if (it.isNullOrEmpty().not()) {
-                activity?.let { activity ->
-                    Toast.makeText(activity, it, Toast.LENGTH_SHORT).show()
-                }
-            }
-        })
-
-        viewModel.uiStateLiveData.observe(viewLifecycleOwner, {
-            it?.let {
-                binding.swipeRefreshLayout?.isRefreshing = it == UiState.LOADING
-            }
-        })
-
         viewModel.getWeatherForecastFromCities()
     }
 
     override fun onDestroy() {
         super.onDestroy()
         _binding = null
+    }
+
+    override fun onShowLoading() {
+        binding.swipeRefreshLayout.isRefreshing = true
+    }
+
+    override fun onDismissLoading() {
+        binding.swipeRefreshLayout.isRefreshing = false
+    }
+
+    override fun onShowErrorMessage(errorMessage: String) {
+        if (errorMessage.isNullOrEmpty().not()) {
+            Toast.makeText(activity, errorMessage, Toast.LENGTH_SHORT).show()
+        }
     }
 }

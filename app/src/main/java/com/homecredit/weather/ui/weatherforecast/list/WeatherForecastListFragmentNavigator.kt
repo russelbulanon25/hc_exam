@@ -1,4 +1,4 @@
-package com.homecredit.weather.ui.weatherforecast.details
+package com.homecredit.weather.ui.weatherforecast.list
 
 interface WeatherForecastListFragmentNavigator {
 
